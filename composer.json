@@ -1,0 +1,33 @@
+{
+    "name": "faiznurullah/bpjs-apiservice-unofficial",
+    "description": "package for bridging php applications to bpjs service",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Faiznurullah\\BpjsApiserviceUnofficial\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Faiz Nurullah"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.8",
+        "illuminate/support": "^10.48"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5" 
+    },
+    "extra": {
+        "laravel": {
+          "providers": [
+            "Faiznurullah\\Bpjs\\BpjsServiceProvider"
+          ],
+          "aliases": {
+            "Bpjs": "Faiznurullah\\Bpjs\\BpjsFacade"
+          }
+        }
+      }
+}
