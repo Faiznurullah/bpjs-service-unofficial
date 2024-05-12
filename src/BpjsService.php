@@ -10,10 +10,31 @@ class Bpjs{
    private $signature;
    private $timestamp;
    private $secretKey;
-   private $base_url;
-   private $service_name;
+   private $base_url; 
 
-    
+   public function __construct($configurations)
+   {
+      $this->base_url = 'https://api.bpjs-kesehatan.go.id/'; 
+
+      if(empty($configurations)){
+
+          $this->consumerID = env('consumerID'); 
+          
+      }else{
+        foreach ($configurations as $key => $val){
+            if (property_exists($this, $key)) {
+                $this->$key = $val;
+            }
+          } 
+      }
+
+     
+      $this->setHeader();
+      $this->setTimestamp();
+      $this->generateSignature();
+      
+   }
+
    protected function setHeader(){
     $this->header = [
         'X-cons-id' => $this->consumerID,
@@ -23,9 +44,10 @@ class Bpjs{
     return $this->header; 
    }
 
+
    protected function setTimestamp(){
     date_default_timezone_set('UTC'); 
-	$datetime = strval(time()-strtotime('1970-01-01 00:00:00'));
+	$datetime = date('Y-m-d H:i:s');
     $this->timestamp = $datetime;
     return $this->timestamp;
    }
@@ -35,7 +57,7 @@ class Bpjs{
     $signature = hash_hmac('sha256', $data, $this->secretKey, true); 
 	$encodedSignature = base64_encode($signature);
     $this->signature = $encodedSignature;
-    return $this;
+    return $this->signature;
    }
 
    protected function get($params){
